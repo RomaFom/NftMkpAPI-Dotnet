@@ -17,13 +17,14 @@ public class AuthController : ControllerBase
     private readonly UserService _userService;
     private readonly IConfiguration _configuration;
 
-    public AuthController(UserService userService,IConfiguration configuration)
+    public AuthController(UserService userService, IConfiguration configuration)
     {
         _userService = userService;
         _configuration = configuration;
     }
 
-    [HttpPost("get-user"), Authorize]
+    [HttpPost("get-user")]
+    [Authorize]
     public async Task<ActionResult<PublicUserDto>> GetUser()
     {
         var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
@@ -36,53 +37,34 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("login"),AllowAnonymous]
+    [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<ActionResult<TokenDto>> Login([FromBody] RegisterUserDto loginDto)
     {
-        if (loginDto is null)
-        {
-            return BadRequest(new { error = "Login Data Is Empty" });
-        }
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(new { error = ModelState });
-        }
-        
+        if (loginDto is null) return BadRequest(new { error = "Login Data Is Empty" });
+        if (!ModelState.IsValid) return BadRequest(new { error = ModelState });
+
         var user = await _userService.GetUserByEmailAsync(loginDto.Email);
-        if (user == null)
-        {
-            return NotFound(new { error = "User Not Found" });
-        }
-        if (!BCrypt.Net.BCrypt.Verify(loginDto.Password,user.Password))
-        {
+        if (user == null) return NotFound(new { error = "User Not Found" });
+        if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
             return Unauthorized(new { error = "Wrong Email or Password" });
-        }
         var jwt = new TokenDto
         {
             token = GenerateToken(user)
         };
         return Ok(jwt);
-        
     }
 
-    [HttpPost("registration"),AllowAnonymous]
+    [HttpPost("registration")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto newUser)
     {
-        if (newUser is null)
-        {
-            return BadRequest(new { error = "User is empty" });
-        }
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(new { error = ModelState });
-        }
+        if (newUser is null) return BadRequest(new { error = "User is empty" });
+        if (!ModelState.IsValid) return BadRequest(new { error = ModelState });
 
         var isExists = await _userService.GetUserByEmailAsync(newUser.Email);
-        if (isExists != null)
-        {
-            return BadRequest(new { error = "User Already Exists" });
-        }
-        
+        if (isExists != null) return BadRequest(new { error = "User Already Exists" });
+
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
 
         var user = new User
@@ -120,12 +102,4 @@ public class AuthController : ControllerBase
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-    
-    [HttpGet("test-protected"),Authorize]
-    public async Task<ActionResult> TestProtected()
-    {
-        return Ok("Works");
-
-    }
-
 }
