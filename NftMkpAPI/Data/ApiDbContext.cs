@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NftMkpAPI.Models;
 
 namespace NftMkpAPI.Data;
 
-public class ApiDbContext : DbContext
+public class ApiDbContext : IdentityDbContext
 {
     public virtual DbSet<Item> Items { get; set; }
     public virtual DbSet<Nft> Nfts { get; set; }
