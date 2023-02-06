@@ -15,10 +15,10 @@ public class ItemsController : ControllerBase
         _itemsService = itemsService;
     }
 
-    [HttpGet("all")]
-    public async Task<ActionResult<List<Item>>> GetAll()
+    [HttpGet("get-all")]
+    public async Task<ActionResult<List<Item>>> GetAll([FromQuery] int page, int size)
     {
-        var items = await _itemsService.GetAllItemsAsync();
+        var items = await _itemsService.GetAllItemsAsync(page,size);
         return Ok(items);
     }
 }
