@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NftMkpAPI.Models;
 using NftMkpAPI.Services;
 
 namespace NftMkpAPI.Controllers;
 
-[Route("api/items")]
+[Route("items/")]
 [ApiController]
 public class ItemsController : ControllerBase
 {
@@ -14,10 +15,10 @@ public class ItemsController : ControllerBase
         _itemsService = itemsService;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("get-all")]
+    public async Task<ActionResult<List<Item>>> GetAll([FromQuery] int page, int size)
     {
-        var items = await _itemsService.GetAllItemsAsync();
+        var items = await _itemsService.GetAllItemsAsync(page,size);
         return Ok(items);
     }
 }
