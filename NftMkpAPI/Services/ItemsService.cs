@@ -30,7 +30,7 @@ public class ItemsService
         var sliceSize = size > 0 ? size : 10;
         return await _context.Items.Include(i => i.Nft)
             .OrderBy(i => i.Item_Id)
-            .Where(i => i.Nft.Owner.Equals(wallet))
+            .Where(i => i.Nft.Owner.ToUpper().Equals(wallet.ToUpper()))
             .Skip(skip)
             .Take(sliceSize)
             .ToListAsync();
