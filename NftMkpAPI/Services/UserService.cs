@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NftMkpAPI.Data;
 using NftMkpAPI.Models;
 
@@ -9,7 +7,7 @@ namespace NftMkpAPI.Services;
 public class UserService
 {
     private readonly ApiDbContext _context;
-    
+
     public UserService(ApiDbContext context)
     {
         _context = context;
@@ -18,7 +16,7 @@ public class UserService
     public async Task AddUserAsync(User user)
     {
         await _context.Users.AddAsync(user);
-         await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 
     public async Task<User> GetUserByEmailAsync(string email)
@@ -26,6 +24,4 @@ public class UserService
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(email));
         return user;
     }
-
-
 }

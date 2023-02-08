@@ -1,4 +1,3 @@
-using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +51,7 @@ builder.Services.AddEntityFrameworkNpgsql()
         options.UseNpgsql(builder.Configuration.GetConnectionString("SampleDbConnection")));
 builder.Services.AddTransient<ItemsService>();
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<TransactionService>();
 
 //JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

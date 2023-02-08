@@ -7,5 +7,6 @@ public class PublicUserDto
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
-    [JsonPropertyName("email")] public string Email { get; set; } = string.Empty;
+    [JsonPropertyName("email")]
+    public string Email { get; set; } = string.Empty;
 }
