@@ -23,4 +23,16 @@ public class ItemsService
             .Take(sliceSize)
             .ToListAsync();
     }
+
+    public async Task<List<Item>> GetItemsByOwnerAsync(int page, int size, string wallet)
+    {
+        var skip = page * size;
+        var sliceSize = size > 0 ? size : 10;
+        return await _context.Items.Include(i => i.Nft)
+            .OrderBy(i => i.Item_Id)
+            .Where(i => i.Nft.Owner.Equals(wallet))
+            .Skip(skip)
+            .Take(sliceSize)
+            .ToListAsync();
+    }
 }
