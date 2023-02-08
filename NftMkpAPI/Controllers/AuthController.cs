@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
-    [HttpPost("get-user")]
+    [HttpGet("get-user")]
     [Authorize]
     public async Task<ActionResult<PublicUserDto>> GetUser()
     {
