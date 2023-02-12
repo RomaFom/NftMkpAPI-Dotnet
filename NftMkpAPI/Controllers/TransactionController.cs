@@ -15,7 +15,7 @@ public class TransactionController : ControllerBase
     private readonly TransactionService _transactionService;
     private readonly ItemsService _itemsService;
 
-    private static HttpClient _nftApi = new()
+    private static readonly HttpClient _nftApi = new()
     {
         BaseAddress = new Uri("http://localhost:8080")
     };
@@ -29,7 +29,6 @@ public class TransactionController : ControllerBase
     [Authorize]
     public async Task<ActionResult> Send([FromBody] SendTxDto tx)
     {
-        Console.WriteLine(tx.ToString());
         if (!ModelState.IsValid)
         {
             return BadRequest(new { error = ModelState });
