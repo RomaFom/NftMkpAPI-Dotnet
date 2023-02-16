@@ -23,9 +23,12 @@ public class ApiDbContext : DbContext
         {
             entity.HasOne(tx => tx.User)
                 .WithMany(user => user.Transactions);
-            
-            entity.HasOne(tx=>tx.Item)
-                .WithMany(item => item.Transactions);
+
+            entity.HasOne(tx => tx.Item)
+                .WithMany(item => item.Transactions)
+                .HasForeignKey(i=>i.Item_Id)
+                .HasPrincipalKey(i=>i.Item_Id);
+
         });
 
         modelBuilder.Entity<Item>(entity =>
