@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace NftMkpAPI.Models;
 
-public enum ActtionType
+public enum ActionType
 {
     Buy,
     List,
@@ -25,11 +25,15 @@ public class Transaction : BaseEntity
 
     [JsonPropertyName("item_id")]
     [Column("item_id")]
-    public string Item_Id { get; set; } = String.Empty;
+    public int Item_Id { get; set; }
     
     [JsonPropertyName("action")]
     [Column("action")]
-    public ActtionType Action { get; set; }
+    public ActionType Action { get; set; }
+    
+    [ForeignKey("Item_Id")]
+    [JsonPropertyName("item")]
+    public Item Item { get; set; }
 
 
     [ForeignKey("User_Id")]

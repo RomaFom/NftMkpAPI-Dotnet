@@ -45,4 +45,7 @@ public class Item : BaseEntity
     [ForeignKey("Nft_Id")]
     [JsonPropertyName("nft")]
     public Nft Nft { get; set; }
+    
+    [JsonIgnore]
+    public ICollection<Transaction> Transactions { get; set; }
 }

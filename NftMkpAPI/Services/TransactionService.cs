@@ -25,6 +25,8 @@ public class TransactionService
     {
         return await _context.Transactions
             .Include(tx => tx.User)
+            .Include(tx=>tx.Item)
+            .Include(tx=>tx.Item.Nft)
             .Where(tx => tx.User_Id.Equals(userId))
             .Select(tx => new TxDto
             {
@@ -36,8 +38,9 @@ public class TransactionService
                 {
                     Id = tx.User.Id,
                     Email = tx.User.Email,
-                }
-                
+                },
+                Item = tx.Item
+
             })
             .ToListAsync();
     }

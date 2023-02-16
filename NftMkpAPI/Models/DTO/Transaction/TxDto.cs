@@ -12,11 +12,14 @@ public class TxDto
     public string Tx_Hash { get; set; } = String.Empty;
 
     [JsonPropertyName("item_id")]
-    public string Item_Id { get; set; } = String.Empty;
+    public int Item_Id { get; set; }
     
     [JsonPropertyName("action")]
-    public ActtionType Action { get; set; }
+    public ActionType Action { get; set; }
     
     [JsonPropertyName("user")]
     public PublicUserDto User { get; set; }
+    
+    [JsonPropertyName("item")]
+    public Item Item { get; set; }
 }

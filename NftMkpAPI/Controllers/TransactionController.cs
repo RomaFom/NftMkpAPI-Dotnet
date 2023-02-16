@@ -40,7 +40,7 @@ public class TransactionController : ControllerBase
             Tx_Hash = tx.Tx_Hash,
             Sender = tx.Sender,
             User_Id = int.Parse(userId),
-            Item_Id = tx.Item_Id.ToString(),
+            Item_Id = tx.Item_Id,
             Action = tx.Action,
         };
         StringContent jsonContent = new(

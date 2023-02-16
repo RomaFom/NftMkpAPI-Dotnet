@@ -19,5 +19,5 @@ public class SendTxDto
     
     [Required]
     [JsonPropertyName("action")]
-    public ActtionType Action { get; set; }
+    public ActionType Action { get; set; }
 }
