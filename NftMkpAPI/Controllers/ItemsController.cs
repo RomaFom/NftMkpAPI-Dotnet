@@ -34,4 +34,15 @@ public class ItemsController : ControllerBase
         var items = await _itemsService.GetItemsByOwnerAsync(page,size,wallet);
         return Ok(items);
     }
+
+    [HttpGet("{itemId:int}")]
+    public async Task<ActionResult<Item>> GetItem(int itemId)
+    {
+        var item = await _itemsService.GetItemByIdAsync(itemId);
+        if (item == null)
+        {
+            return NotFound(new { error = "Item not exists" });
+        }
+        return Ok(item);
+    }
 }

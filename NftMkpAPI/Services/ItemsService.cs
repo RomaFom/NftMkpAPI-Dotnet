@@ -35,4 +35,13 @@ public class ItemsService
             .Take(sliceSize)
             .ToListAsync();
     }
+
+    public async Task<Item> GetItemByIdAsync(int itemId)
+    {
+        var item = await _context.Items.Include(i => i.Nft)
+            .Where(i => i.Item_Id.Equals(itemId))
+            .FirstOrDefaultAsync();
+        if (item == null) return null;
+        return item;
+    }
 }
