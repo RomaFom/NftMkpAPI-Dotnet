@@ -14,4 +14,7 @@ public class User : BaseEntity
     [JsonPropertyName("password")]
     [Column("password")]
     public string Password { get; set; } = string.Empty;
+    
+    [JsonIgnore]
+    public ICollection<Transaction> Transactions { get; set; }
 }

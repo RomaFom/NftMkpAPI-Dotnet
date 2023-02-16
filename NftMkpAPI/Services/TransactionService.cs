@@ -1,5 +1,8 @@
-﻿using NftMkpAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NftMkpAPI.Data;
 using NftMkpAPI.Models;
+using NftMkpAPI.Models.DTO.Transaction;
+using NftMkpAPI.Models.DTO.User;
 
 namespace NftMkpAPI.Services;
 
@@ -17,5 +20,26 @@ public class TransactionService
         await _context.Transactions.AddAsync(tx);
         await _context.SaveChangesAsync();
     }
-    
+
+    public async Task<List<TxDto>> GetTransactionsByUserIdAsync(int userId)
+    {
+        return await _context.Transactions
+            .Include(tx => tx.User)
+            .Where(tx => tx.User_Id.Equals(userId))
+            .Select(tx => new TxDto
+            {
+                Sender = tx.Sender,
+                Tx_Hash = tx.Tx_Hash,
+                Item_Id = tx.Item_Id,
+                Action = tx.Action,
+                User = new PublicUserDto
+                {
+                    Id = tx.User.Id,
+                    Email = tx.User.Email,
+                }
+                
+            })
+            .ToListAsync();
+    }
+
 }

@@ -43,8 +43,8 @@ public class AuthController : ControllerBase
     {
         if (loginDto is null) return BadRequest(new { error = "Login Data Is Empty" });
         if (!ModelState.IsValid) return BadRequest(new { error = ModelState });
-
-        var user = await _userService.GetUserByEmailAsync(loginDto.Email);
+        
+        var user = await _userService.GetUserByEmailAsync(loginDto.Email!);
         if (user == null) return NotFound(new { error = "User Not Found" });
         if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
             return Unauthorized(new { error = "Wrong Email or Password" });

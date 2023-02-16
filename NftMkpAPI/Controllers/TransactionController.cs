@@ -13,7 +13,7 @@ namespace NftMkpAPI.Controllers;
 public class TransactionController : ControllerBase
 {
     private readonly TransactionService _transactionService;
-    private readonly ItemsService _itemsService;
+    // private readonly ItemsService _itemsService;
 
     private static readonly HttpClient _nftApi = new()
     {
@@ -40,7 +40,8 @@ public class TransactionController : ControllerBase
             Tx_Hash = tx.Tx_Hash,
             Sender = tx.Sender,
             User_Id = int.Parse(userId),
-            Item_Id = tx.Item_Id.ToString()
+            Item_Id = tx.Item_Id.ToString(),
+            Action = tx.Action,
         };
         StringContent jsonContent = new(
             JsonSerializer.Serialize(new
@@ -55,6 +56,14 @@ public class TransactionController : ControllerBase
         var jsonRes = await res.Content.ReadAsStringAsync();
         return Ok(jsonRes);
     }
+    
+    [HttpGet("get-transactions/{userId:int}")]
+    public async Task<ActionResult<Transaction>> GetTransactions(int userId)
+    {
+        var transactions = await _transactionService.GetTransactionsByUserIdAsync(userId);
+        return Ok(transactions);
+    }
+    
 
 
 }

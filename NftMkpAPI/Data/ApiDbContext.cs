@@ -19,6 +19,12 @@ public class ApiDbContext : DbContext
         modelBuilder.Entity<Item>().ToTable("items");
         modelBuilder.Entity<Transaction>().ToTable("transactions");
 
+        modelBuilder.Entity<Transaction>(entity =>
+        {
+            entity.HasOne(tx => tx.User)
+                .WithMany(user => user.Transactions);
+        });
+
         modelBuilder.Entity<Item>(entity =>
         {
             entity.HasOne(i => i.Nft)
