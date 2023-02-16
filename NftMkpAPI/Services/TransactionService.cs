@@ -45,4 +45,27 @@ public class TransactionService
             .ToListAsync();
     }
 
+    public async Task<List<TxDto>> GetItemHistoryAsync(int itemId)
+    {
+        return await _context.Transactions
+            .Include(tx => tx.User)
+            .Include(tx => tx.Item)
+            .Include(tx => tx.Item.Nft)
+            .Where(tx => tx.Item_Id.Equals(itemId))
+            .Select(tx => new TxDto
+            {
+                Sender = tx.Sender,
+                Tx_Hash = tx.Tx_Hash,
+                Item_Id = tx.Item_Id,
+                Action = tx.Action,
+                User = new PublicUserDto
+                {
+                    Id = tx.User.Id,
+                    Email = tx.User.Email,
+                },
+                Item = tx.Item
+            })
+            .ToListAsync();
+    }
+
 }

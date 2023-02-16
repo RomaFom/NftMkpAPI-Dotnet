@@ -58,12 +58,19 @@ public class TransactionController : ControllerBase
     }
     
     [HttpGet("get-transactions/{userId:int}")]
-    public async Task<ActionResult<Transaction>> GetTransactions(int userId)
+    public async Task<ActionResult<TxDto>> GetTransactions(int userId)
     {
         var transactions = await _transactionService.GetTransactionsByUserIdAsync(userId);
         return Ok(transactions);
     }
-    
+
+    [HttpGet("get-history/{itemId:int}")]
+    public async Task<ActionResult<TxDto>> GetItemTransactions(int itemId)
+    {
+        var transactions = await _transactionService.GetItemHistoryAsync(itemId);
+        return Ok(transactions);
+    }
+
 
 
 }
